@@ -1,4 +1,9 @@
-{-# LANGUAGE ExistentialQuantification,MultiParamTypeClasses  #-}
+
+module Base
+  (Map,Map0)
+  where
+
+import Test.QuickCheck 
 
 {-
 
@@ -12,7 +17,7 @@ It allows for teleportation and variation in space and time.
 
 -}
 
-type MatrixClockTime = Int
+type MatrixClockTime = Double
   {- Number of milliseconds since time 0. -}
 
 type DPt = (Int,Int)
@@ -48,6 +53,7 @@ instance Show Clock where show = show . pos
 type SolidObject = (DPair,DPair)
 
 class Show m => Map m where
+  defaultInit :: m
   lbBound :: m -> DPt
   rtBound :: m -> DPt
   platforms :: m -> [Platform]
@@ -57,7 +63,7 @@ class Show m => Map m where
   playerInit :: Player m
   {- similarity measure between two Matrix states. -}
   {- similarity has to be in [0,1] for valid inputs -}
-  similarity :: MatrixSt m -> MatrixSt m -> Double
+  similarity :: m -> m -> Double
   mpShow :: m -> String
   mpShow = show
   {- CAN-DO: specialization at a concrete time -}
@@ -73,12 +79,11 @@ dist1DSim :: Double -> Double -> Double
 dist1DSim x1 x2 = exp (- abs(x2-x1))
 
 data Map0 =
-  Map0 MatrixClockTime
-  {- For Map0, only MatrixClockTime is the
-     discriminating feature (other than the player). -}
+  Map0 MatrixClockTime (Player Map0)
   deriving (Show, Eq)
 
 instance Map Map0 where
+  defaultInit = Map0 0 playerInit
   lbBound _ = (0,0)
   rtBound _ = (22,13)
   platforms _ =
@@ -91,24 +96,18 @@ instance Map Map0 where
   clocks _ = map (\p -> Clock p id) [(3,4),(19,4)]
   playerInit = Player (1.5,0) False
   similarity
-    (MatrixSt p1 (Map0 clk1))
-    (MatrixSt p2 (Map0 clk2)) =
+    (Map0 clk1 p1)
+    (Map0 clk2 p2) =
       let plySim   = dist2DSim (plyPos p1) (plyPos p2)
-          clockSim = dist1DSim (fromIntegral clk1) (fromIntegral clk2)
+          clockSim = dist1DSim clk1 clk2
       in  0.5 * plySim + 0.5 * clockSim
     {- treat player and clock similarity equal -}
-    
-data MatrixSt map = {- a state of the matrix -} 
-  MatrixSt {
-    mtxPlayer :: Player map
-   ,mtxMapSt :: map
-  }
-{- Currently, player and map are treated differently ... -}
+  {- important. ALL aspects of what is shown to the
+    player has to be part of m (or the similarity measure)!
+    Only this way, one is truely teleporting to the new place
+    in space/time/configuration.
+    That means, that everything that is displayed
+    on the screen (and that is part of the matrix)
+    has to be only dependent on the matrix state. -}
 
-instance Show m => Show (MatrixSt m) where
-  show (MatrixSt ply map) = "MatrixSt with (" ++ show ply ++ ") and ("++show map++")"
-
-initMatrix :: MatrixSt Map0
-initMatrix =
-  let map0 = Map0 0
-  in  MatrixSt playerInit map0
+prop_similarity1 = similarity defaultInit (defaultInit::Map0) == 1
