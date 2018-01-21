@@ -1,4 +1,4 @@
-# telebox
+# teleport-proto
 ##### A Sandbox / Simulation of a visualization-oriented and similarity-based Teleportation Mechanic
 
 The project is a prototype. Current status:

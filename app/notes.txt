@@ -1,0 +1,11 @@
+
+
+Building: $ stack setup
+
+During Prototyping / Interpreted: $ stack ghci and ghci> :r
+
+Add dependency: edit "build-depends: ..." in teleport-proto.cabal
+
+Final executables or GHCJS: (... look into tutorials ...)
+
+

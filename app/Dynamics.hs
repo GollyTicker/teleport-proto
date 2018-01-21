@@ -16,8 +16,10 @@ simulate t mtx = undefined
 
 
 {- potential balancing function between visualization and stabilization?
-  0 < r < 1 -}
-bla r = weightProb (\x -> exp (-(  abs(x-0)*r + abs(x-9)*(1-r)  ))) p0
+  0 < r < 1.
+
+This looks good :)  -}
+bla r = weightProb (\x -> r*exp (-abs(x-0)) + (1-r)*exp ( -abs(x-9)) ) p0
 p0 = createParticles  [9,9,1,1,1,1,1,1,3,3] [0..9::Double]
 
 renderMatrix :: MatrixSt m -> a

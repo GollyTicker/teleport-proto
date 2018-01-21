@@ -1,9 +1,7 @@
 
 module Base
-  (Map,Map0)
+  (Map(..),Map0(..))
   where
-
-import Test.QuickCheck 
 
 {-
 
@@ -110,4 +108,4 @@ instance Map Map0 where
     on the screen (and that is part of the matrix)
     has to be only dependent on the matrix state. -}
 
-prop_similarity1 = similarity defaultInit (defaultInit::Map0) == 1
+{- prop_similarity1 = similarity defaultInit (defaultInit::Map0) == 1 -}
