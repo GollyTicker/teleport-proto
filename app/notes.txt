@@ -9,3 +9,6 @@ Add dependency: edit "build-depends: ..." in teleport-proto.cabal
 Final executables or GHCJS: (... look into tutorials ...)
 
 
+GHCJS might not setup properly on windows:
+* using older release of stack without bug:
+  https://github.com/commercialhaskell/stack/releases/tag/v1.0.4
