@@ -12,3 +12,14 @@ Final executables or GHCJS: (... look into tutorials ...)
 GHCJS might not setup properly on windows:
 * using older release of stack without bug:
   https://github.com/commercialhaskell/stack/releases/tag/v1.0.4
+  
+  
+Installation:
+  * stack
+  * stack setup
+  * sudo apt install nodejs-legacy
+  * curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    * sudo apt-get install -y nodejs
+  * RUN: stack build
+    * xdg-open /home/swaneet/github/teleport-proto/.stack-work/install/i386-linux/lts-6.30/ghcjs-0.2.0.9006030_ghc-7.10.3/bin/teleport-proto-exe.jsexe/
+index.html
